@@ -70,11 +70,16 @@ def draw(datas, path):
 
 
     for p in bar_plot.patches:
-        bar_plot.annotate(format(p.get_height(), '.1f').rstrip('0').rstrip('.').lstrip("0"), 
-                        (p.get_x() + p.get_width() / 2., p.get_height()), 
+        x = p.get_height()
+        if x==0:x=""
+        else: x = f"{x:.2f}" 
+        bar_plot.annotate(x, (p.get_x() + p.get_width() / 2., p.get_height()), 
                         ha = 'center', va = 'center', 
                         xytext = (0, 9), 
                         textcoords = 'offset points')
+
+    plt.xticks(ticks = [0,1,2,3], labels = data['Context Type'] ,fontsize= 22)
+    plt.xlabel('')
 
     plt.gca().yaxis.set_major_formatter(ScalarFormatter(useMathText=True)) 
     plt.gca().ticklabel_format(axis='y', style='sci', scilimits=(0,0))

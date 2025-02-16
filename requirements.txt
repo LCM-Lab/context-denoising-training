@@ -1,4 +1,3 @@
 
 transformers==4.46.1
-datasets
 emoji

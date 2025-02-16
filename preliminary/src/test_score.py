@@ -123,7 +123,7 @@ def begin_test(args, question, answer, selected_idx, model, tokenizer, depth_per
     auto_save_data(flow_res, f"{args.save_dir}/{save_file_name}.pkl")
 
 
-# python test_igscore.py
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--selected_idx', type=int, default=0, help='selected index')
@@ -138,8 +138,7 @@ if __name__ == "__main__":
     parser.add_argument("--context_lengths", type = str, default = "11900,7900,3900,1900,900", help = 'contexts of lengths that will be tested')
 
     args = parser.parse_args()
-    
-    args.dataset_path = "/mnt/petrelfs/tangzecheng/local_data/pg19-test"
+
     
     args.save_dir = f"{args.save_dir}/{args.tag}"
 

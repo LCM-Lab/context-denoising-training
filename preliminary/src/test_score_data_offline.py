@@ -93,7 +93,7 @@ def begin_test(args, input_context, question, answer, selected_idx, model, token
     logger.info(flow_res)
     auto_save_data(flow_res, f"{args.save_dir}/{save_file_name}.pkl")
 
-# python test_igscore_data_offline.py
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--selected_idx', type=int, default=0, help='selected index')
@@ -106,8 +106,7 @@ if __name__ == "__main__":
     parser.add_argument('--save_dir', type=str, default="../results", help='path to dataset')
     parser.add_argument("--tag", type = str, default = "information_flow_data_offline")
     args = parser.parse_args()
-    
-    args.dataset_path = "/mnt/petrelfs/tangzecheng/local_data/pg19-test"
+
     
     args.save_dir = f"{args.save_dir}/{args.tag}"
 
