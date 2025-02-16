@@ -838,9 +838,7 @@ def find_multi_needle_idx(input_ids, tokenizer, needles, showlog = True):
 
 
 def test_model_with_adapter(model, input, golden, search_pos, attack_pos, emoji_pos, target_poss, is_0k, model_name, tokenizer, take_last_loss = True, with_adapter=False, start_layer = 0):
-    """
-    zecheng_note: 这里计算的是language modeling loss    
-    """
+
     embeddingmanager = ZeroEmbedManager(model, model_name,
                     nonzero_poss=search_pos + attack_pos,
                     factor = 0.1)

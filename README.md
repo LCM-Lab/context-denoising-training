@@ -2,7 +2,7 @@
 
 **Environmental Setup**
 
-We recommend using `transformers==4.46.1 to deploy models successfully.`
+We recommend using ` transformers4.46.1` to deploy models successfully.
 
 Install required packages by running
 
@@ -23,11 +23,11 @@ git clone https://huggingface.co/datasets/emozilla/pg19-test
 
 ## Preliminary
 
-We generate datas from source data when testing.
+We generate data from source data when testing.
 
 You may also use the full data, and we provide part of it:  **preliminary/data/full20.jsonl**
 
-Recommentedly, get results with method where data generated online by running
+Our recommendation is to get results with method where data generated online by running
 
 ```bash
 cd ../..
@@ -38,7 +38,7 @@ python preliminary/src/test_score.py --model=meta-llama/Meta-Llama-3.1-8B-Instru
 
 **At least 8 GPUs with more than 85G memory of each are required to run it successfully.**
 
-Calcuate and visualize the IG / FR score of the generated results by running
+Calculate and visualize the IG / FR score of the generated results by running
 
 ```bash
 python preliminary/src/stats_igscore.py --context_length=11900

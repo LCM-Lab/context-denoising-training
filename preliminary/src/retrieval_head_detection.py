@@ -41,7 +41,6 @@ from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM, AutoCon
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'faiss_attn'))
 print(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'faiss_attn'))
-# sys.path.append("/data/zecheng/acl2025/MyRLHF/RetrievalHead/reetrievalheaddetect/faiss_attn")
 from source.modeling_llama import LlamaForCausalLM
 from source.modeling_qwen2 import Qwen2ForCausalLM
 from source.modeling_mixtral import MixtralForCausalLM
@@ -195,10 +194,10 @@ class LLMNeedleHaystackTester:
         self.implicit_reasoning = multi_hop_reasoning
         self.enc = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 
-        if multi_hop_reasoning:  # zecheng_note: if reasoning, remove niah task data
+        if multi_hop_reasoning: 
             needles_and_stacks = [l for l in needles_and_stacks if l['tag']!='niah']
             self.golden_answer = [l["golden_answer"] for l in needles_and_stacks]
-            haystack = datasets.load_dataset("/data/data/zecheng/data/pg19-test", split="test")  # zecheng_note : 从pg 19预训练数据集里面加载数据作为上下文
+            haystack =None
             self.noise_sampler_test = SentenceSampler(haystack, tokenizer=self.enc, shuffle=False, random_seed=None)
         
         else:  # niah testing, find retrieval head
@@ -308,11 +307,11 @@ class LLMNeedleHaystackTester:
                 for depth_percent in self.document_depth_percents:
                     self.evaluate_and_log(context_length, depth_percent)
         else:
-            for context_length in self.context_lengths[::-1]:  # zecheng_note: 首先进行长的测试，然后进行短的测试 [::-1]
+            for context_length in self.context_lengths[::-1]:  
                 if context_length < args.s_len or context_length > args.e_len: 
                     continue
                 all_combinations = list(itertools.combinations(list(range(0, self.document_depth_percent_intervals)), len(self.real_needle)))
-                for depth_percent in all_combinations:  # zecheng_note: 这里是fact插入的位置，不同的排列组合
+                for depth_percent in all_combinations:  
                     depth_percent = np.array(depth_percent) / self.document_depth_percent_intervals
                     self.evaluate_and_log(context_length, depth_percent)
 
@@ -443,13 +442,12 @@ class LLMNeedleHaystackTester:
         test_end_time = time.time()
         test_elapsed_time = test_end_time - test_start_time
         
-        # zecheng_note: 如果是niah testing，用rouge指标；如果是implicit reasoning, 用是否包含golden answer来判断
+
         if self.implicit_reasoning:
             score = 100 if self.golden_answer in response else 0
         else:
             score = scorer.score(self.real_needle, response)['rouge1'].recall*100
 
-        # zecheng_note: 对于niah testing，如果分数大于50，则算retrieval head；如果是implicit reasoning且分数等于100分，则算Reasoning Head
         if (self.implicit_reasoning and score == 100) or (not self.implicit_reasoning and score > 50):  
             self.retrieval_head_accumulate(retrieval_score)
             head_score = [(i[0], np.mean(i[1])) for i in self.head_counter.items()]
@@ -543,8 +541,7 @@ class LLMNeedleHaystackTester:
 
 
     def generate_context(self, context_length, depth_percent):
-        """ zecheng_note: 如果是implicit reasoning, 则使用noise_sampler_test来采样上下文，不用原来的context文件
-        """
+
         if not self.implicit_reasoning: # Load up tiktoken so we navigate tokens more easily
             # Get your Paul Graham files loaded into a string
             context = self.read_context_files()
@@ -569,8 +566,7 @@ class LLMNeedleHaystackTester:
     
 
     def insert_multi_needle(self, depth_percent, context_length):
-        # self.noise_sampler_test
-        # zecheng note: 目前仅支持随机插入evidences, 不规定具体位置
+
         all_tok_needles = []
         real_tok_needles = []
         for needle in self.needle:
@@ -748,9 +744,7 @@ if __name__ == "__main__":
     parser.add_argument('--model_name_suffix', type=str, default=None, help='name of model')
     parser.add_argument('--model_provider', type=str, default="LLaMA", help='which model to use')
     args = parser.parse_args()
-    
-    # zecheng note: debug code
-    # args.model_path = "/data/zecheng/hf_models/Meta-Llama-3.1-8B-Instruct"
+   
     # args.model_path = "Qwen/Qwen2.5-7B-Instruct"
     args.e_len = 64000
     args.s_len = 4000
