@@ -1,5 +1,6 @@
 import sys, os, json, pickle, math, random
 import numpy as np, pandas as pd
+from tqdm import tqdm
 import itertools
 from functools import wraps, partial
 from tqdm import trange
