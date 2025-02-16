@@ -1,9 +1,11 @@
-import sys, os
-import numpy as np
+import sys, os, json, pickle, math, random
+import numpy as np, pandas as pd
 import itertools
 from functools import wraps, partial
 from tqdm import trange
 
+import torch
+from torch import nn
 import torch.nn.functional as F
 
 import datasets
@@ -18,9 +20,133 @@ from transformers.modeling_outputs import (
 
 import emoji
 from retrieval_head_detection import SentenceSampler
-from modelzipper.tutils import *
+from typing import Optional, Union, List, Dict, Tuple
+from loguru import logger
 logger.info(sys.path)
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+def auto_read_data(file_path, return_format="list", print_log=False):
+    """
+    Read data from a file and return it in the specified format.
+
+    Parameters:
+        file_path (str): The path to the file to be read.
+        return_format (str, optional): The format in which the data should be returned. Defaults to "list".
+
+    Returns:
+        list or str: The data read from the file, in the specified format.
+    """
+
+    file_type = file_path.split('.')[-1].lower()  
+
+    # Get the size of the file right after it's been written to
+    file_size = os.path.getsize(file_path)
+    # Convert the size to a more readable format
+    readable_size = convert_size(file_size)
+    if print_log:
+        logger.info(f"begin to read data from {file_path} | file size: {readable_size} | file type: {file_type}")
+    try:
+        if file_type == 'jsonl':  
+            with open(file_path, 'r', encoding='utf-8') as file:  
+                data = [json.loads(line.strip()) for line in file]  
+        elif file_type == 'json':
+            with open(file_path, 'r', encoding='utf-8') as file:  
+                data = json.load(file)
+        elif file_type == 'pkl':  
+            with open(file_path, 'rb') as file:  
+                data = pickle.load(file)  
+        elif file_type == 'txt':  
+            with open(file_path, 'r', encoding='utf-8') as file:  
+                data = [line.strip() for line in file]  
+        elif file_type == 'csv':
+            raw_data = pd.read_csv(file_path)
+            data = raw_data.to_dict(orient='records')  # list[Dict]
+        else:  
+            raise ValueError(f"Unsupported file type: {file_type}")  
+    except:
+        raise ValueError(
+            f"Error reading file: {file_path}, \
+            content didn't match the file type {file_type}, \
+            check your data format!"
+        )
+    
+    if return_format != "list":  
+        raise ValueError(f"Unsupported return format: {return_format}")  
+  
+    return data  
+
+
+def convert_size(size_bytes):
+    if size_bytes == 0:
+        return "0B"
+    size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+    i = int(math.floor(math.log(size_bytes, 1024)))
+    p = math.pow(1024, i)
+    s = round(size_bytes / p, 2)
+    return f"{s} {size_name[i]}"
+
+
+def auto_save_data(lst: Optional[List|Dict], file_path):
+    """
+    Save a list of items to a file.
+    Automatically detect the file type by the suffix of the file_path.
+
+    Args:
+        lst (List): The list of items to be saved.
+        file_path (str): The path to the file.
+
+        //* Support file types
+            - jsonl
+            - pkl
+            - txt
+        *//
+    
+    Attention:
+        Input must by in a list, even if there is only one item.
+        e.g., auto_save_data([item], file_path)
+        
+    Raises:
+        ValueError: If the file type is not supported.
+    """
+    
+    data_dir = os.path.dirname(file_path)
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+        logger.info(f"{data_dir} not exist! --> Create data dir {data_dir}")
+    suffix_ = file_path.split(".")[-1]
+    
+    if suffix_ == "jsonl":
+        with open(file_path, "w") as f:
+            for item in lst:
+                json.dump(item, f, ensure_ascii=False)
+                f.write("\n")
+        logger.info("jsonl file saved successfully!")
+    
+    elif suffix_ == "json":
+        with open(file_path, "w") as f:
+            json.dump(lst, f, ensure_ascii=False)
+        logger.info("json file saved successfully!")
+
+    elif suffix_ == "pkl":
+        with open(file_path, "wb") as f:
+            pickle.dump(lst, f)
+        logger.info("pkl file saved successfully!")
+        
+    elif suffix_ == "txt":
+        with open(file_path, "w") as f:
+            for item in lst:
+                f.write(item + "\n")
+        logger.info("txt file saved successfully!")
+    else:
+        raise ValueError(f"file_type {suffix_} not supported!")
+    
+    # Get the size of the file right after it's been written to
+    file_size = os.path.getsize(file_path)
+    # Convert the size to a more readable format
+    readable_size = convert_size(file_size)
+
+    logger.info(f"Save file to {file_path} | len: {len(lst)} |  size: {readable_size}")
 
 def hack_attn_llama(
     self,
