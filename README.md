@@ -23,7 +23,7 @@ Below, we provide two attention maps comparing models before and after applying 
 - after_cdt.png file: [rebuttal/after_cdt.png](rebuttal/after_cdt.png)
 
 We also provide a compressed version of the view, but due to the reduced resolution, it is very blurry. We still recommend that you use the above method to download and view the original image locally.
-<img src="rebuttal/quick_view.jpeg" width="80%" alt="">
+<img src="rebuttal/quick_view.jpeg" width="60%" alt="">
 
 
 **Please focus on the red-boxed regions at the bottom.**
