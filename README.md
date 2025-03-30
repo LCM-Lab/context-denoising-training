@@ -7,7 +7,7 @@ Since OpenReview does not support image uploads to visualize our results, we pro
 
 We analyze intermediate model checkpoints stored during training and visualized how **information flow and attention distribution** evolve as training progresses. Our results demonstrate a clear improvement over time, showcasing how the **Expectation-Maximization (EM) process** refines the model’s ability to detects noise based on information flow and improves the training by diminishing the noise, thereby enhancing the information flow.
 
-![PDF截图](./rebuttal/em_process.png)
+<img src="./rebuttal/em_process.png" width="60%" alt="PDF截图">
 
 
 ## 
