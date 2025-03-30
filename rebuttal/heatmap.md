@@ -1,7 +1,9 @@
 ## **Reviewer sY5g [Weakness 1]**: *Visualization of attention map before and after CDT.*
 
 Given the long sequence length in our evaluation, we used a test dataset with a sequence length of 12K, which we evenly divided into 380 chunks. For each chunk, we computed the average attention similarity across chunks to analyze the attention distribution.
-Below, we provide two attention maps comparing models before and after applying CDT, both taken from the 24th layer of the model, as this layer offers a clearer visualization of CDT’s effect. 
+Below, we provide two attention maps comparing models before and after applying CDT, both taken from the 24th layer of the model, as this layer offers a clearer visualization of CDT’s effect.
+
+Image too large to display...
 
 <img src="./before_cdt.png" width="80%" alt="">
 <img src="./after_cdt.png" width="80%" alt="">
