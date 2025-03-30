@@ -22,6 +22,9 @@ Below, we provide two attention maps comparing models before and after applying 
 - before_cdt.png file: [rebuttal/before_cdt.png](rebuttal/before_cdt.png)
 - after_cdt.png file: [rebuttal/after_cdt.png](rebuttal/after_cdt.png)
 
+We also provide a compressed version of the view, but due to the reduced resolution, it is very blurry. We still recommend that you use the above method to download and view the original image locally.
+<img src="rebuttal/quick_view.jpeg" width="80%" alt="">
+
 
 **Please focus on the red-boxed regions at the bottom.**
 The last row represents the model’s attention distribution across the entire sequence, showing how it allocates focus to different chunks (tokens). Before CDT, the model attends to many regions (with red indicating high attention weights). However, after CDT, the model concentrates its attention on only a few critical chunks, demonstrating its ability to filter out noisy information effectively.
