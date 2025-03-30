@@ -7,7 +7,12 @@ Since OpenReview does not support image uploads to visualize our results, we pro
 
 We analyze intermediate model checkpoints stored during training and visualized how **information flow and attention distribution** evolve as training progresses. 
 Our results demonstrate a clear improvement over time, showcasing how the **Expectation-Maximization (EM) process** refines the model’s ability to detects noise based on information flow and improves the training by diminishing the noise, thereby enhancing the information flow.
-<img src="./rebuttal/em_process.png" width="80%" alt="">
+
+*Due to the large size of the image file, it cannot be displayed on the current page. Therefore, please click on the link to jump the files and download them and view it locally!*
+
+-em_process.png file: [rebuttal/em_process.png](./rebuttal/em_process.png)
+
+<img src="rebuttal/screenshot-20250330-224631.png" width="80%" alt="">
 
 *Note*: We measure the proportion of key token gradients (including evidence and attack tokens) relative to the total gradient distribution. Specifically, we compute the average gradient magnitude for key positions and divide it by the sum of the average gradient magnitudes for both key positions and other positions. This percentage reflects how CDT progressively shifts the model’s focus toward critical tokens while reducing the influence of noisy tokens.
 
