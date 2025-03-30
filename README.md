@@ -1,3 +1,18 @@
+# News: rebuttal update
+
+Since OpenReview does not support image uploads to visualize our results, we provide some visualizations here.  
+
+
+## **Reviewer 383A [Weakness 2]**: *No empirical evidence demonstrating the benefit of CDT's EM process.*  
+
+We analyze intermediate model checkpoints stored during training and visualized how **information flow and attention distribution** evolve as training progresses. Our results demonstrate a clear improvement over time, showcasing how the **Expectation-Maximization (EM) process** refines the model’s ability to detects noise based on information flow and improves the training by diminishing the noise, thereby enhancing the information flow.
+
+![PDF截图](./rebuttal/em_process.png)
+
+
+## 
+
+
 # Repos for context-denoising-training
 
 **Environmental Setup**
