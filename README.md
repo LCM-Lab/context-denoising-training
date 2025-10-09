@@ -1,64 +1,83 @@
+# Context Denoising Training for Long-Context Modeling
 
-# Repos for context-denoising-training
+This is the official repository for the paper:  
+**[Revisiting Long-Context Modeling from a Context Denoising Perspective](https://arxiv.org/abs/2510.05862)**.
 
-**Environmental Setup**
+---
 
-We recommend using ` transformers4.46.1` to deploy models successfully.
+## 🛠️ Environment Setup
 
-Install required packages by running
+We recommend using **`transformers==4.46.1`** to ensure successful model deployment.
+
+Install the required dependencies with:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-**Data Preparation**
+---
 
-We use [pg19-test](https://huggingface.co/datasets/emozilla/pg19-test) dataset in our experiments. You may clone this repo by running
+## 📚 Data Preparation
+
+We use the [**pg19-test**](https://huggingface.co/datasets/emozilla/pg19-test) dataset in our experiments. To download it, run:
 
 ```bash
 cd preliminary/data
 git clone https://huggingface.co/datasets/emozilla/pg19-test
 ```
 
-## Preliminary
+### Preliminary Experiments
 
-We generate data from source data when testing.
+During evaluation, we dynamically generate test data from the source.  
+A subset of the full evaluation data is provided at:  
+`preliminary/data/full20.jsonl`
 
-You may also use the full data, and we provide part of it:  **preliminary/data/full20.jsonl**
-
-Our recommendation is to get results with method where data generated online by running
+However, we **strongly recommend** generating data on-the-fly for the most accurate results. To do so, run:
 
 ```bash
 cd ../..
 python preliminary/src/test_score.py --model=meta-llama/Meta-Llama-3.1-8B-Instruct --context_lengths=11900
 ```
 
-**[Note]**
+> **⚠️ Note**:  
+> This step requires **at least 8 GPUs**, each with **more than 85 GB of memory**.
 
-**At least 8 GPUs with more than 85G memory of each are required to run it successfully.**
-
-Calculate and visualize the IG / FR score of the generated results by running
+After generation, compute and visualize the **IG (Information Gain)** and **FR (Faithfulness Ratio)** scores:
 
 ```bash
 python preliminary/src/stats_igscore.py --context_length=11900
 python preliminary/src/stats_frscore.py --context_length=11900
 ```
 
+---
 
+## 🔥 Training
 
-## 🔥 Train
-
-To setup the training environment, csetup `loom-train` environment first:
+To set up the training environment, first clone the `LOOM-Train` framework:
 
 ```bash
 git clone https://github.com/LCM-Lab/LOOM-Train.git
 ```
-Then setup the environment according to [LOOM-Train](https://github.com/LCM-Lab/LOOM-Train.git)
 
+Then follow the setup instructions in the [LOOM-Train repository](https://github.com/LCM-Lab/LOOM-Train).
 
-To run the CDT training process:
+Once ready, launch the Context Denoising Training (CDT) process:
 
 ```bash
 cd train
 bash train_cdt.sh
 ```
+
+---
+
+## 🤝 Contributing
+We welcome contributions! Whether it’s bug fixes, new features, or documentation improvements — feel free to open an issue or PR.
+
+---
+
+## 📬 Contact
+Questions? Suggestions? Reach out at: zctang2000@gmail.com 
+
+
+
+
