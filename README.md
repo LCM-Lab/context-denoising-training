@@ -78,6 +78,22 @@ We welcome contributions! Whether it’s bug fixes, new features, or documentati
 ## 📬 Contact
 Questions? Suggestions? Reach out at: zctang2000@gmail.com 
 
+---
+
+## 📚 Cite Us
+
+If you find this work useful, please cite our paper:
+
+```bibtex
+@article{tang2025revisiting,
+  title={Revisiting Long-context Modeling from Context Denoising Perspective},
+  author={Tang, Zecheng and Ji, Baibei and Li, Juntao and Wu, Lijun and Gui, Haijia and Zhang, Min},
+  journal={arXiv preprint arXiv:2510.05862},
+  year={2025}
+}
+```
+
+
 
 
 
